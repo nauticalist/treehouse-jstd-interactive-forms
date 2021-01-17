@@ -180,8 +180,10 @@ const cardNumberValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{13,16}$/.test(cardNumber.value)) {
             validationPass(cardNumber);
+            return true;
         } else {
             validationFail(cardNumber);
+            return false;
         }
     } else {
         return true;
@@ -194,8 +196,10 @@ const zipCodeValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{5}$/.test(zipCode.value)) {
             validationPass(zipCode);
+            return true;
         } else {
             validationFail(zipCode);
+            return false;
         }
     } else {
         return true;
@@ -208,8 +212,10 @@ const cvvValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{3}$/.test(cvv.value)) {
             validationPass(cvv);
+            return true;
         } else {
             validationFail(cvv);
+            return false;
         }
     } else {
         return true;
@@ -226,30 +232,17 @@ cvv.addEventListener("keyup", cvvValidator);
 
 form.addEventListener("submit", (e) => {
     // form validations on submission
-    if (!nameValidator()) {
-        console.log("Name field cannot be blank");
+    const isNameValid = nameValidator();
+    const isEmailValid = emailValidator();
+    const isActivityValid = activityValidator();
+    const isCarNumberValid = cardNumberValidator();
+    const isZipCodeValid = zipCodeValidator();
+    const isCVVValid = cvvValidator();
+
+    if(!isNameValid || !isEmailValid || !isActivityValid || !isCarNumberValid || !isZipCodeValid || !isCVVValid) {
         e.preventDefault();
     }
-    if (!emailValidator()) {
-        console.log("Email is not valid or empty");
-        e.preventDefault();
-    }
-    if (!activityValidator()) {
-        console.log("At least one activity should be selected");
-        e.preventDefault();
-    }
-    if (!cardNumberValidator()) {
-        console.log("Invalid credit card number");
-        e.preventDefault();
-    }
-    if (!zipCodeValidator()) {
-        console.log("Invalid zip code");
-        e.preventDefault();
-    }
-    if (!cvvValidator()) {
-        console.log("Invalid ccv number");
-        e.preventDefault();
-    }
+
 });
 
 // Highlight focused checkbox field
