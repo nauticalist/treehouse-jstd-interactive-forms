@@ -118,6 +118,7 @@ paymentSelectElement.addEventListener("change", (e) => {
     }
 });
 
+// Helper functions to display form validation errors
 const validationPass = (element) => {
     element.parentElement.classList.add("valid");
     element.parentElement.classList.remove("not-valid");
@@ -130,6 +131,7 @@ const validationFail = (element) => {
     element.parentElement.lastElementChild.style.display = "block";
 };
 
+// Name form field validation
 const nameValidator = () => {
     const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameElement.value);
     if (nameIsValid) {
@@ -140,6 +142,7 @@ const nameValidator = () => {
     return nameIsValid;
 }
 
+// Email form field validation
 const emailValidator = () => {
     let emailIsValid;
     if (!emailElement.value) {
@@ -159,6 +162,7 @@ const emailValidator = () => {
     return emailIsValid;
 };
 
+// Activity selection form field validation
 const activityValidator = () => {
     const anyActivitySelected = selectedActivities > 0;
     if (anyActivitySelected) {
@@ -170,8 +174,8 @@ const activityValidator = () => {
     return anyActivitySelected;
 };
 
+// Card number form field validation (if credit card is selected as payment method)
 const cardNumber = document.querySelector("#cc-num");
-
 const cardNumberValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{13,16}$/.test(cardNumber.value)) {
@@ -184,8 +188,8 @@ const cardNumberValidator = () => {
     }
 };
 
+// Zip code form field validation (if credit card is selected as payment method)
 const zipCode = document.querySelector("#zip");
-
 const zipCodeValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{5}$/.test(zipCode.value)) {
@@ -198,8 +202,8 @@ const zipCodeValidator = () => {
     }
 };
 
+// Cvv form field validation (if credit card is selected as payment method)
 const cvv = document.querySelector("#cvv");
-
 const cvvValidator = () => {
     if (paymentSelectElement.value === "credit-card") {
         if (/^\d{3}$/.test(cvv.value)) {
@@ -212,6 +216,7 @@ const cvvValidator = () => {
     }
 };
 
+// Real time form validation
 nameElement.addEventListener("keyup", nameValidator);
 emailElement.addEventListener("keyup", emailValidator);
 activitiesFieldSet.addEventListener("change", activityValidator);
@@ -220,6 +225,7 @@ zipCode.addEventListener("keyup", zipCodeValidator);
 cvv.addEventListener("keyup", cvvValidator);
 
 form.addEventListener("submit", (e) => {
+    // form validations on submission
     if (!nameValidator()) {
         console.log("Name field cannot be blank");
         e.preventDefault();
@@ -244,4 +250,14 @@ form.addEventListener("submit", (e) => {
         console.log("Invalid ccv number");
         e.preventDefault();
     }
+});
+
+// Highlight focused checkbox field
+activityCheckboxes.forEach(cb => {
+    cb.addEventListener('focus', e => cb.parentElement.classList.add('focus'));
+
+    cb.addEventListener('blur', e => {
+        const active = document.querySelector('.focus');
+        if (active) active.classList.remove('focus');
+    })
 });
